@@ -9,14 +9,24 @@
 import SpriteKit
 
 class GameScene: SKScene {
+  
+    var ship = SKSpriteNode(imageNamed: "ship")
+    var joystick = Joystick(thumbNode: SKSpriteNode(imageNamed: "thumb_stick"), backdropNode:SKSpriteNode(imageNamed: "dpad"))
+   var fireButton = SKSpriteNode(imageNamed: "fire")
+   var thrustButton = SKSpriteNode(imageNamed: "thrust")
+  
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!";
-        myLabel.fontSize = 65;
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
-        
-        self.addChild(myLabel)
+      backgroundColor = SKColor.blackColor()
+      ship.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
+      addChild(ship)
+    
+      joystick.position = CGPointMake(CGFloat(100), CGFloat(100))
+      addChild(joystick)
+      
+      fireButton.position = CGPointMake(CGFloat(size.width - 100), CGFloat(100))
+      thrustButton.position = CGPointMake(CGFloat(size.width - 170), CGFloat(100))
+      addChild(fireButton)
+      addChild(thrustButton)
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -25,21 +35,23 @@ class GameScene: SKScene {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
             
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
+            let sprite = SKSpriteNode(imageNamed:"asteroid_large_1")
             
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
+            sprite.xScale = 1
+            sprite.yScale = 1
             sprite.position = location
             
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
+            let action = SKAction.rotateByAngle(CGFloat(M_PI / 3), duration:1)
             
             sprite.runAction(SKAction.repeatActionForever(action))
             
             self.addChild(sprite)
         }
     }
-   
+  
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+      if joystick.velocity.x != 0 || joystick.velocity.y != 0 {
+        ship.zRotation = joystick.angularVelocity + CGFloat(M_PI_2)
+      }
     }
 }
