@@ -37,6 +37,8 @@
 		2686E4F51A784B5500719660 /* VectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2686E4F41A784B5500719660 /* VectorMath.swift */; };
 		2686E4F81A785A1900719660 /* ship_thrust.png in Resources */ = {isa = PBXBuildFile; fileRef = 2686E4F61A785A1900719660 /* ship_thrust.png */; };
 		2686E4F91A785A1900719660 /* ship_thrust@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2686E4F71A785A1900719660 /* ship_thrust@x2.png */; };
+		26A320C31A786654009D6F85 /* Ship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320C21A786654009D6F85 /* Ship.swift */; };
+		26A320C51A786D79009D6F85 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320C41A786D79009D6F85 /* Button.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +86,8 @@
 		2686E4F41A784B5500719660 /* VectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorMath.swift; sourceTree = "<group>"; };
 		2686E4F61A785A1900719660 /* ship_thrust.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ship_thrust.png; path = "Asteroids-assets/scaled-at-50/ship_thrust.png"; sourceTree = SOURCE_ROOT; };
 		2686E4F71A785A1900719660 /* ship_thrust@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ship_thrust@x2.png"; path = "Asteroids-assets/ship_thrust@x2.png"; sourceTree = SOURCE_ROOT; };
+		26A320C21A786654009D6F85 /* Ship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ship.swift; sourceTree = "<group>"; };
+		26A320C41A786D79009D6F85 /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,8 +132,10 @@
 				266DA2471A770341009C55CC /* sprites.atlas */,
 				266DA2261A76A217009C55CC /* GameOverScene.swift */,
 				266DA2671A7709DB009C55CC /* Joystick.swift */,
+				26A320C21A786654009D6F85 /* Ship.swift */,
 				266DA2021A76A104009C55CC /* AppDelegate.swift */,
 				266DA2061A76A104009C55CC /* GameScene.swift */,
+				26A320C41A786D79009D6F85 /* Button.swift */,
 				2686E4F41A784B5500719660 /* VectorMath.swift */,
 				266DA2081A76A104009C55CC /* GameViewController.swift */,
 				266DA20A1A76A104009C55CC /* Main.storyboard */,
@@ -315,8 +321,10 @@
 				266DA2071A76A104009C55CC /* GameScene.swift in Sources */,
 				266DA2091A76A104009C55CC /* GameViewController.swift in Sources */,
 				266DA2681A7709DB009C55CC /* Joystick.swift in Sources */,
+				26A320C51A786D79009D6F85 /* Button.swift in Sources */,
 				266DA2271A76A217009C55CC /* GameOverScene.swift in Sources */,
 				2686E4F51A784B5500719660 /* VectorMath.swift in Sources */,
+				26A320C31A786654009D6F85 /* Ship.swift in Sources */,
 				266DA2031A76A104009C55CC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
