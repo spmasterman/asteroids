@@ -11,7 +11,7 @@ import SpriteKit
 
 class Ship : SKNode {
   let shipNode, thrustNode: SKSpriteNode
-  let bulletSpeed = CGFloat(30)
+  let bulletSpeed = CGFloat(80)
   
   var isThrusting = false
   
@@ -42,9 +42,9 @@ class Ship : SKNode {
     let y = shipNode.position.y + CGFloat(bearing.y) * shipNode.size.width/2.0
     bullet.position = CGPointMake(x, y)
     
-   
     let action = SKAction.moveByX(CGFloat(bearing.x) * bulletSpeed, y: CGFloat(bearing.y) * bulletSpeed, duration: 1)
     bullet.runAction(SKAction.repeatActionForever(action))
+    
     self.addChild(bullet)
   }
   

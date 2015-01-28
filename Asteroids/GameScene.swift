@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+  class GameScene: SKScene {
   
   let ship = Ship()
   let joystick = Joystick()
