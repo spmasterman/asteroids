@@ -12,7 +12,7 @@ import SpriteKit
 class Ship : SKNode {
   let shipNode, thrustNode: SKSpriteNode
   let thrusterPower = Scalar(6.0)
-
+  
   var isThrusting = false
   
   init(shipNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship"), thrustNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship_thrust")) {
@@ -20,7 +20,7 @@ class Ship : SKNode {
     self.thrustNode = thrustNode
     
     super.init()
-   
+    
     physicsBody = SKPhysicsBody(rectangleOfSize: shipNode.size)
     physicsBody?.categoryBitMask = shipCategory
     physicsBody?.dynamic = true
@@ -32,9 +32,9 @@ class Ship : SKNode {
     self.addChild(self.shipNode)
     self.addChild(self.thrustNode)
   }
-
+  
   required init?(coder aDecoder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
+    fatalError("init(coder:) has not been implemented")
   }
   
   func fire() {
@@ -69,7 +69,7 @@ class Ship : SKNode {
   func setHeading(zRotation: CGFloat) {
     shipNode.zRotation = zRotation
   }
-
+  
   func removeOffscreenBullets() {
     enumerateChildNodesWithName("bullet", usingBlock:  {
       (node: SKNode!, stop: UnsafeMutablePointer <ObjCBool>) -> Void in
@@ -89,5 +89,20 @@ class Ship : SKNode {
       thrust()
     }
     removeOffscreenBullets()
+    
+    let xPadding = shipNode.size.width/2
+    let yPadding = shipNode.size.height/2
+    
+    if (position.x < -xPadding) {
+      position.x = scene!.size.width + xPadding
+    } else if (position.x > (scene!.size.width + xPadding)) {
+      position.x = -xPadding
+    }
+    
+    if (position.y < -yPadding) {
+      position.y = scene!.size.height + yPadding
+    } else if(position.y > (scene!.size.height + yPadding)) {
+      position.y = -yPadding
+    }
   }
 }

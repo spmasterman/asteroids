@@ -44,7 +44,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     if joystick.velocity.x != 0 || joystick.velocity.y != 0 {
        ship.setHeading(joystick.angularVelocity + CGFloat(M_PI_2))
     }
-    
     ship.update(currentTime)
   }
 }
