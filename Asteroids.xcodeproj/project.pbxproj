@@ -39,6 +39,7 @@
 		2686E4F91A785A1900719660 /* ship_thrust@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2686E4F71A785A1900719660 /* ship_thrust@x2.png */; };
 		26A320C31A786654009D6F85 /* Ship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320C21A786654009D6F85 /* Ship.swift */; };
 		26A320C51A786D79009D6F85 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320C41A786D79009D6F85 /* Button.swift */; };
+		26A320C71A79869F009D6F85 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320C61A79869F009D6F85 /* Bullet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		2686E4F71A785A1900719660 /* ship_thrust@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ship_thrust@x2.png"; path = "Asteroids-assets/ship_thrust@x2.png"; sourceTree = SOURCE_ROOT; };
 		26A320C21A786654009D6F85 /* Ship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ship.swift; sourceTree = "<group>"; };
 		26A320C41A786D79009D6F85 /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		26A320C61A79869F009D6F85 /* Bullet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				266DA2261A76A217009C55CC /* GameOverScene.swift */,
 				266DA2671A7709DB009C55CC /* Joystick.swift */,
 				26A320C21A786654009D6F85 /* Ship.swift */,
+				26A320C61A79869F009D6F85 /* Bullet.swift */,
 				266DA2021A76A104009C55CC /* AppDelegate.swift */,
 				266DA2061A76A104009C55CC /* GameScene.swift */,
 				26A320C41A786D79009D6F85 /* Button.swift */,
@@ -326,6 +329,7 @@
 				2686E4F51A784B5500719660 /* VectorMath.swift in Sources */,
 				26A320C31A786654009D6F85 /* Ship.swift in Sources */,
 				266DA2031A76A104009C55CC /* AppDelegate.swift in Sources */,
+				26A320C71A79869F009D6F85 /* Bullet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

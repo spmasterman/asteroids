@@ -11,8 +11,8 @@ import SpriteKit
 class Button: SKNode {
 
   var buttonNode: SKSpriteNode
-  var down: () -> Void = {}
-  var up: () -> Void = {}
+  var onDown: () -> Void = {}
+  var onUp: () -> Void = {}
   
   init(buttonNode: SKSpriteNode) {
     self.buttonNode = buttonNode
@@ -30,13 +30,13 @@ class Button: SKNode {
 
   override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
     for touch in touches {
-      down()
+      onDown()
     }
   }
   
   override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
     for touch in touches {
-      up()
+      onUp()
     }
   }
 }

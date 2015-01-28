@@ -8,8 +8,11 @@
 
 import SpriteKit
 
-  class GameScene: SKScene {
-  
+let shipCategory: UInt32 =  0x1 << 0;
+let bulletCategory: UInt32 =  0x1 << 1;
+let asteroidCategory: UInt32 =  0x1 << 2;
+
+class GameScene: SKScene, SKPhysicsContactDelegate {
   let ship = Ship()
   let joystick = Joystick()
   let fireButton = Button(buttonNode: SKSpriteNode(imageNamed: "fire"))
@@ -18,6 +21,9 @@ import SpriteKit
   override func didMoveToView(view: SKView) {
     backgroundColor = SKColor.blackColor()
     
+    physicsWorld.gravity = CGVectorMake(0,0);
+    physicsWorld.contactDelegate = self;
+    
     ship.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
     addChild(ship)
     
@@ -25,18 +31,12 @@ import SpriteKit
     addChild(joystick)
     
     fireButton.position = CGPointMake(CGFloat(size.width - 100), CGFloat(100))
-    fireButton.down = {
-      self.ship.fire()
-    }
+    fireButton.onDown = { self.ship.fire() }
     addChild(fireButton)
     
     thrustButton.position = CGPointMake(CGFloat(size.width - 170), CGFloat(100))
-    thrustButton.down = {
-      self.ship.isThrusting = true
-    }
-    thrustButton.up = {
-      self.ship.isThrusting = false
-    }
+    thrustButton.onDown = { self.ship.isThrusting = true }
+    thrustButton.onUp = { self.ship.isThrusting = false }
     addChild(thrustButton)
   }
   
@@ -44,15 +44,7 @@ import SpriteKit
     if joystick.velocity.x != 0 || joystick.velocity.y != 0 {
        ship.setHeading(joystick.angularVelocity + CGFloat(M_PI_2))
     }
-    ship.setThrustPosition()
     
-    // remove bullets that leave screen
-    self.enumerateChildNodesWithName("bulletNode", usingBlock:  {
-      (node: SKNode!, stop: UnsafeMutablePointer <ObjCBool>) -> Void in
-      
-      if (node.position.x < 0 || node.position.x > self.size.width || node.position.y < 0 || node.position.y > self.size.height) {
-        node.removeFromParent()
-      }
-    })
+    ship.update(currentTime)
   }
 }
