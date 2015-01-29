@@ -14,6 +14,8 @@ class Ship : SKNode {
   let thrusterPower = Scalar(6.0)
   
   var isThrusting = false
+  var isDead = false
+  var isInvincible = false
   
   init(shipNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship"), thrustNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship_thrust")) {
     self.shipNode = shipNode
@@ -37,14 +39,25 @@ class Ship : SKNode {
     fatalError("init(coder:) has not been implemented")
   }
   
+  func onImpact() {
+    if isDead || isInvincible {
+      return
+    }
+    
+    isDead = true
+    hidden = true
+  }
+  
   func fire() {
-    let bearing = getBearing()
-    
-    let x = position.x + CGFloat(bearing.x) * shipNode.size.width/2.0
-    let y = position.y + CGFloat(bearing.y) * shipNode.size.width/2.0
-    
-    let bullet = Bullet(position: CGPointMake(x, y), bearing: bearing, velocity:physicsBody?.velocity)
-    self.scene?.addChild(bullet)
+    if !isDead {
+      let bearing = getBearing()
+      
+      let x = position.x + CGFloat(bearing.x) * shipNode.size.width/2.0
+      let y = position.y + CGFloat(bearing.y) * shipNode.size.width/2.0
+      
+      let bullet = Bullet(position: CGPointMake(x, y), bearing: bearing, velocity:physicsBody?.velocity)
+      self.scene?.addChild(bullet)
+    }
   }
   
   func thrust() {

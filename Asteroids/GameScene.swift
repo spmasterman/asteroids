@@ -18,6 +18,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   let fireButton = Button(buttonNode: SKSpriteNode(imageNamed: "fire"))
   let thrustButton = Button(buttonNode: SKSpriteNode(imageNamed: "thrust"))
 
+  var pendingAsteroids: [(AsteroidSize, CGPoint)] = []
+  
   func didBeginContact(contact: SKPhysicsContact!) {
     var firstBody: SKPhysicsBody!
     var secondBody: SKPhysicsBody!
@@ -36,6 +38,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
        (secondBody.node as Asteroid).onImpactFromBullet()
        (firstBody.node as Bullet).onImpact()
     }
+    
+    if (firstBody.categoryBitMask & shipCategory) != 0 &&
+      (secondBody.categoryBitMask & asteroidCategory) != 0 {
+        (firstBody.node as Ship).onImpact()
+    }
+    
   }
   
   override func didMoveToView(view: SKView) {
@@ -60,10 +68,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     addChild(thrustButton)
     
     for _ in 1...3 {
-      let position = CGPoint(x: size.width - CGFloat(arc4random_uniform(UInt32(size.width * 0.5))), y: CGFloat(arc4random_uniform(UInt32(size.height))))
-      let asteroid = Asteroid(size: .Large, position: position)
-      addChild(asteroid)
+      addAsteroid(.Large,  position: CGPoint(x: size.width - CGFloat(arc4random_uniform(UInt32(size.width * 0.5))), y: CGFloat(arc4random_uniform(UInt32(size.height)))))
     }
+  }
+  
+  func addAsteroid(size: AsteroidSize, position: CGPoint) {
+    addChild(Asteroid(size: size, position: position))
   }
   
   func removeOffscreenBullets() {
@@ -92,5 +102,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       (node as Asteroid).update(currentTime)
     })
 
+    for pendingAsteroid in pendingAsteroids {
+      addAsteroid(pendingAsteroid.0, position: pendingAsteroid.1)
+    }
+    pendingAsteroids = []
   }
 }

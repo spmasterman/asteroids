@@ -18,6 +18,7 @@ enum AsteroidSize {
 class Asteroid : SKNode {
 
   var asteroidNode: SKSpriteNode
+  var aSize: AsteroidSize
   let maxSpeed: UInt32 = 60
   let minSpeed: UInt32 = 30
   
@@ -30,6 +31,7 @@ class Asteroid : SKNode {
     case AsteroidSize.Small:
       asteroidNode = SKSpriteNode(imageNamed: "asteroid_small_1")
     }
+    aSize = size
     
     super.init()
     
@@ -41,7 +43,7 @@ class Asteroid : SKNode {
     physicsBody?.linearDamping = 0
     physicsBody?.contactTestBitMask = shipCategory | bulletCategory;
     physicsBody?.collisionBitMask = 0;
-    
+  
     self.position = position
     
     let spin = getRandomAngle() - Float(M_PI)
@@ -57,6 +59,24 @@ class Asteroid : SKNode {
   }
   
   func onImpactFromBullet() {
+    var nextSize: AsteroidSize?
+    
+    switch aSize {
+    case AsteroidSize.Large:
+      nextSize = AsteroidSize.Medium
+    case AsteroidSize.Medium:
+      nextSize = AsteroidSize.Small
+    case AsteroidSize.Small:
+      nextSize = nil
+    }
+    
+    if (nextSize != nil) {
+      for _ in 1...3 {
+        let pendingAsteroid = (nextSize!, position)
+        (scene! as GameScene).pendingAsteroids.append(pendingAsteroid)
+      }
+    }
+    
     self.removeFromParent()
   }
   
