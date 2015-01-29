@@ -38,12 +38,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     thrustButton.onDown = { self.ship.isThrusting = true }
     thrustButton.onUp = { self.ship.isThrusting = false }
     addChild(thrustButton)
+    
+    for index in 1...3 {
+      let position = CGPoint(x: size.width - CGFloat(arc4random_uniform(UInt32(size.width * 0.5))), y: CGFloat(arc4random_uniform(UInt32(size.height))))
+      let asteroid = Asteroid(size: .Large, position: position)
+      addChild(asteroid)
+    }
   }
+  
+  func removeOffscreenBullets() {
+    enumerateChildNodesWithName("bullet", usingBlock:  {
+      (node: SKNode!, stop: UnsafeMutablePointer <ObjCBool>) -> Void in
+      
+      let x = node.position.x
+      let y = node.position.y
+      
+      if (x < 0 || x > self.size.width || y < 0 || y > self.size.height) {
+        node.removeFromParent()
+      }
+    })
+  }
+  
+  func wrapAsteroids() {
+      }
   
   override func update(currentTime: CFTimeInterval) {
     if joystick.velocity.x != 0 || joystick.velocity.y != 0 {
        ship.setHeading(joystick.angularVelocity + CGFloat(M_PI_2))
     }
     ship.update(currentTime)
+    
+    removeOffscreenBullets()
+    
+    enumerateChildNodesWithName("asteroid", usingBlock:  {
+      (node: SKNode!, stop: UnsafeMutablePointer <ObjCBool>) -> Void in
+      (node as Asteroid).update(currentTime)
+    })
+
   }
 }

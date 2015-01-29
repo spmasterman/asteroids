@@ -40,6 +40,7 @@
 		26A320C31A786654009D6F85 /* Ship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320C21A786654009D6F85 /* Ship.swift */; };
 		26A320C51A786D79009D6F85 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320C41A786D79009D6F85 /* Button.swift */; };
 		26A320C71A79869F009D6F85 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320C61A79869F009D6F85 /* Bullet.swift */; };
+		26A320C91A7AB3CD009D6F85 /* Asteroid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320C81A7AB3CD009D6F85 /* Asteroid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		26A320C21A786654009D6F85 /* Ship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ship.swift; sourceTree = "<group>"; };
 		26A320C41A786D79009D6F85 /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		26A320C61A79869F009D6F85 /* Bullet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
+		26A320C81A7AB3CD009D6F85 /* Asteroid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asteroid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 				266DA2671A7709DB009C55CC /* Joystick.swift */,
 				26A320C21A786654009D6F85 /* Ship.swift */,
 				26A320C61A79869F009D6F85 /* Bullet.swift */,
+				26A320C81A7AB3CD009D6F85 /* Asteroid.swift */,
 				266DA2021A76A104009C55CC /* AppDelegate.swift */,
 				266DA2061A76A104009C55CC /* GameScene.swift */,
 				26A320C41A786D79009D6F85 /* Button.swift */,
@@ -325,6 +328,7 @@
 				266DA2091A76A104009C55CC /* GameViewController.swift in Sources */,
 				266DA2681A7709DB009C55CC /* Joystick.swift in Sources */,
 				26A320C51A786D79009D6F85 /* Button.swift in Sources */,
+				26A320C91A7AB3CD009D6F85 /* Asteroid.swift in Sources */,
 				266DA2271A76A217009C55CC /* GameOverScene.swift in Sources */,
 				2686E4F51A784B5500719660 /* VectorMath.swift in Sources */,
 				26A320C31A786654009D6F85 /* Ship.swift in Sources */,

@@ -40,11 +40,11 @@ class Ship : SKNode {
   func fire() {
     let bearing = getBearing()
     
-    let x = shipNode.position.x + CGFloat(bearing.x) * shipNode.size.width/2.0
-    let y = shipNode.position.y + CGFloat(bearing.y) * shipNode.size.width/2.0
+    let x = position.x + CGFloat(bearing.x) * shipNode.size.width/2.0
+    let y = position.y + CGFloat(bearing.y) * shipNode.size.width/2.0
     
     let bullet = Bullet(position: CGPointMake(x, y), bearing: bearing, velocity:physicsBody?.velocity)
-    self.addChild(bullet)
+    self.scene?.addChild(bullet)
   }
   
   func thrust() {
@@ -70,28 +70,14 @@ class Ship : SKNode {
     shipNode.zRotation = zRotation
   }
   
-  func removeOffscreenBullets() {
-    enumerateChildNodesWithName("bullet", usingBlock:  {
-      (node: SKNode!, stop: UnsafeMutablePointer <ObjCBool>) -> Void in
-      
-      let x = node.position.x + self.position.x
-      let y = node.position.y + self.position.y
-      
-      if (x < 0 || x > self.scene?.size.width || y < 0 || y > self.scene?.size.height) {
-        node.removeFromParent()
-      }
-    })
-  }
-  
   func update(currentTime: CFTimeInterval) {
     setThrustPosition()
     if (isThrusting) {
       thrust()
     }
-    removeOffscreenBullets()
     
-    let xPadding = shipNode.size.width/2
-    let yPadding = shipNode.size.height/2
+    let xPadding = shipNode.size.width/4
+    let yPadding = shipNode.size.height/4
     
     if (position.x < -xPadding) {
       position.x = scene!.size.width + xPadding
