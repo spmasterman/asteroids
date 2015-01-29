@@ -35,7 +35,11 @@ class Bullet : SKNode {
     
     addChild(bulletNode)
   }
-
+  
+  func onImpact() {
+    self.removeFromParent()
+  }
+  
   required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
   }

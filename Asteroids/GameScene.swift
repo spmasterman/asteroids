@@ -18,6 +18,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   let fireButton = Button(buttonNode: SKSpriteNode(imageNamed: "fire"))
   let thrustButton = Button(buttonNode: SKSpriteNode(imageNamed: "thrust"))
 
+  func didBeginContact(contact: SKPhysicsContact!) {
+    var firstBody: SKPhysicsBody!
+    var secondBody: SKPhysicsBody!
+    
+    if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+      firstBody = contact.bodyA
+      secondBody = contact.bodyB
+    }
+    else {
+      firstBody = contact.bodyB
+      secondBody = contact.bodyA
+    }
+    
+    if (firstBody.categoryBitMask & bulletCategory) != 0 &&
+      (secondBody.categoryBitMask & asteroidCategory) != 0 {
+       (secondBody.node as Asteroid).onImpactFromBullet()
+       (firstBody.node as Bullet).onImpact()
+    }
+  }
+  
   override func didMoveToView(view: SKView) {
     backgroundColor = SKColor.blackColor()
     
@@ -39,7 +59,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     thrustButton.onUp = { self.ship.isThrusting = false }
     addChild(thrustButton)
     
-    for index in 1...3 {
+    for _ in 1...3 {
       let position = CGPoint(x: size.width - CGFloat(arc4random_uniform(UInt32(size.width * 0.5))), y: CGFloat(arc4random_uniform(UInt32(size.height))))
       let asteroid = Asteroid(size: .Large, position: position)
       addChild(asteroid)
@@ -58,9 +78,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       }
     })
   }
-  
-  func wrapAsteroids() {
-      }
   
   override func update(currentTime: CFTimeInterval) {
     if joystick.velocity.x != 0 || joystick.velocity.y != 0 {

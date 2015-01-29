@@ -56,6 +56,10 @@ class Asteroid : SKNode {
     self.addChild(asteroidNode)
   }
   
+  func onImpactFromBullet() {
+    self.removeFromParent()
+  }
+  
   func getRandomAngle()->Float {
     return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * Float(M_PI) * 2.0
   }
