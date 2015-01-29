@@ -43,7 +43,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       (secondBody.categoryBitMask & asteroidCategory) != 0 {
         (firstBody.node as Ship).onImpact()
     }
-    
+  }
+  
+  func getSpawnPosition() -> CGPoint {
+    return CGPoint(x: size.width * 0.1, y: size.height * 0.5)
   }
   
   override func didMoveToView(view: SKView) {
@@ -52,7 +55,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     physicsWorld.gravity = CGVectorMake(0,0);
     physicsWorld.contactDelegate = self;
     
-    ship.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
+    ship.position = getSpawnPosition()
     addChild(ship)
     
     joystick.position = CGPointMake(CGFloat(100), CGFloat(100))

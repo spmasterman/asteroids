@@ -17,6 +17,12 @@ class Ship : SKNode {
   var isDead = false
   var isInvincible = false
   
+  let deadPause = CFTimeInterval(3)
+  let invinciblePause = CFTimeInterval(3)
+  
+  var deadTime: CFTimeInterval = 0 //cumulative time weve been dead
+  var invincibleTime: CFTimeInterval = 0 // cumulative time weve been invincible
+  
   init(shipNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship"), thrustNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship_thrust")) {
     self.shipNode = shipNode
     self.thrustNode = thrustNode
@@ -102,6 +108,30 @@ class Ship : SKNode {
       position.y = scene!.size.height + yPadding
     } else if(position.y > (scene!.size.height + yPadding)) {
       position.y = -yPadding
+    }
+  
+    if (isDead) {
+      if (deadTime == 0) {
+        deadTime = currentTime
+      } else if (currentTime - deadTime > deadPause) {
+          deadTime = 0;
+          invincibleTime = 0
+          isDead = false
+          isInvincible = true
+          position = (scene as GameScene).getSpawnPosition()
+          physicsBody?.velocity = CGVector(dx:0, dy:0)
+          zRotation = 0
+          hidden = false
+      }
+    }
+    
+    if (isInvincible) {
+      if (invincibleTime == 0) {
+        invincibleTime = currentTime
+      } else if (currentTime - invincibleTime > invinciblePause) {
+        invincibleTime = 0
+        isInvincible = false
+     }
     }
   }
 }
