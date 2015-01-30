@@ -10,14 +10,11 @@ import Foundation
 import SpriteKit
 
 class Joystick : SKNode {
-  let kThumbSpringBackDuration: Double =  0.3
   let backdropNode, thumbNode: SKSpriteNode
+  let thumbSpringBackDuration: Double =  0.3
   var isTracking: Bool = false
-  var velocity: CGPoint = CGPointMake(0, 0)
-  var travelLimit: CGPoint = CGPointMake(0, 0)
-  var angularVelocity: CGFloat = 0.0
-  var size: Float = 0.0
-  
+  var valueVector = Vector2.Zero // vector of thumb position - max length unit vector
+
   func anchorPointInPoints() -> CGPoint {
     return CGPointMake(0, 0)
   }
@@ -30,7 +27,6 @@ class Joystick : SKNode {
     
     self.addChild(self.backdropNode)
     self.addChild(self.thumbNode)
-    
     self.userInteractionEnabled = true
   }
   
@@ -51,37 +47,37 @@ class Joystick : SKNode {
     for touch in touches {
       var touchPoint: CGPoint = touch.locationInNode(self)
       
-      if self.isTracking == true && sqrtf(powf((Float(touchPoint.x) - Float(self.thumbNode.position.x)), 2) + powf((Float(touchPoint.y) - Float(self.thumbNode.position.y)), 2)) < Float(self.thumbNode.size.width) {
-        if sqrtf(powf((Float(touchPoint.x) - Float(self.anchorPointInPoints().x)), 2) + powf((Float(touchPoint.y) - Float(self.anchorPointInPoints().y)), 2)) <= Float(self.thumbNode.size.width) {
-          var moveDifference: CGPoint = CGPointMake(touchPoint.x - self.anchorPointInPoints().x, touchPoint.y - self.anchorPointInPoints().y)
-          self.thumbNode.position = CGPointMake(self.anchorPointInPoints().x + moveDifference.x, self.anchorPointInPoints().y + moveDifference.y)
+      let delta = Vector2(Scalar(touchPoint.x - thumbNode.position.x), Scalar(touchPoint.y - thumbNode.position.y))
+      
+      if self.isTracking == true && delta.length < Float(thumbNode.size.width) {
+        let vectorToBoundary = Vector2(Scalar(touchPoint.x - anchorPointInPoints().x), Scalar(touchPoint.y - anchorPointInPoints().y))
+        if vectorToBoundary.length <= Float(thumbNode.size.width) {
+          thumbNode.position = CGPointMake(anchorPointInPoints().x + CGFloat(vectorToBoundary.x), anchorPointInPoints().y + CGFloat(vectorToBoundary.y))
         } else {
-          var vX: Double = Double(touchPoint.x) - Double(self.anchorPointInPoints().x)
-          var vY: Double = Double(touchPoint.y) - Double(self.anchorPointInPoints().y)
-          var magV: Double = sqrt(vX*vX + vY*vY)
-          var aX: Double = Double(self.anchorPointInPoints().x) + vX / magV * Double(self.thumbNode.size.width)
-          var aY: Double = Double(self.anchorPointInPoints().y) + vY / magV * Double(self.thumbNode.size.width)
-          self.thumbNode.position = CGPointMake(CGFloat(aX), CGFloat(aY))
+          let magnitude = vectorToBoundary.length
+          
+          let posX = Scalar(anchorPointInPoints().x) + vectorToBoundary.x / magnitude * Scalar(thumbNode.size.width)
+          let posY = Scalar(anchorPointInPoints().y) + vectorToBoundary.y / magnitude * Scalar(thumbNode.size.height)
+          thumbNode.position = CGPointMake(CGFloat(posX), CGFloat(posY))
         }
       }
-      self.velocity = CGPointMake(((self.thumbNode.position.x - self.anchorPointInPoints().x)), ((self.thumbNode.position.y - self.anchorPointInPoints().y)))
-      self.angularVelocity = -atan2(self.thumbNode.position.x - self.anchorPointInPoints().x, self.thumbNode.position.y - self.anchorPointInPoints().y)
-    }
+      valueVector = Vector2(Scalar(thumbNode.position.x / thumbNode.size.width), Scalar(thumbNode.position.y / thumbNode.size.height))
+   }
   }
   
   override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-    self.resetVelocity()
+    returnToCenter()
   }
   
   override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
-    self.resetVelocity()
+    returnToCenter()
   }
   
-  func resetVelocity() {
-    self.isTracking = false
-    self.velocity = CGPointZero
-    var easeOut: SKAction = SKAction.moveTo(self.anchorPointInPoints(), duration: kThumbSpringBackDuration)
-    easeOut.timingMode = SKActionTimingMode.EaseOut
-    self.thumbNode.runAction(easeOut)
+  func returnToCenter() {
+    isTracking = false
+    valueVector = Vector2.Zero
+    var centerAction: SKAction = SKAction.moveTo(self.anchorPointInPoints(), duration: thumbSpringBackDuration)
+    centerAction.timingMode = SKActionTimingMode.EaseOut
+    thumbNode.runAction(centerAction)
   }
 }

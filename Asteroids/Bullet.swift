@@ -20,7 +20,7 @@ class Bullet : SKNode {
     bulletNode.yScale = 2
     name = "bullet";
     
-    physicsBody = SKPhysicsBody(circleOfRadius: bulletNode.size.width/2)
+    physicsBody = SKPhysicsBody(circleOfRadius: 2)
     physicsBody?.categoryBitMask = bulletCategory
     physicsBody?.dynamic = true
     physicsBody?.linearDamping = 0

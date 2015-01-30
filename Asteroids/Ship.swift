@@ -29,16 +29,37 @@ class Ship : SKNode {
     
     super.init()
     
-    physicsBody = SKPhysicsBody(rectangleOfSize: shipNode.size)
+    physicsBody = SKPhysicsBody(polygonFromPath: getPath())
     physicsBody?.categoryBitMask = shipCategory
     physicsBody?.dynamic = true
-    physicsBody?.contactTestBitMask = asteroidCategory;
-    physicsBody?.collisionBitMask = 0;
+    physicsBody?.contactTestBitMask = asteroidCategory
+    physicsBody?.collisionBitMask = 0
+    physicsBody?.allowsRotation = true
+    physicsBody?.angularDamping = 5000.0
+    
     name = "ship";
     
     setThrustPosition()
     self.addChild(self.shipNode)
     self.addChild(self.thrustNode)
+  }
+  
+  func getPath()->CGPathRef {
+    var points = [CGPoint]()
+    
+    
+    points.append(CGPoint(x: 0.7 * shipNode.size.width/2.0, y: 0.0))
+    points.append(CGPoint(x: 0.7 * -shipNode.size.width/2.0, y: 0.7 * shipNode.size.height/2.0))
+    points.append(CGPoint(x: 0.7 * -shipNode.size.width/2.0, y: 0.7 * -shipNode.size.height/2.0))
+    
+    let path = CGPathCreateMutable()
+    var cpg = points[0]
+    CGPathMoveToPoint(path, nil, cpg.x, cpg.y)
+    for p in points {
+      CGPathAddLineToPoint(path, nil, p.x, p.y)
+    }
+    CGPathCloseSubpath(path)
+    return path
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -73,24 +94,20 @@ class Ship : SKNode {
   
   func setThrustPosition() {
     thrustNode.zRotation = shipNode.zRotation
-    thrustNode.hidden = !isThrusting
-    
-    let bearing = getBearing()
-    let x = shipNode.position.x - CGFloat(bearing.x) * shipNode.size.width/2.0
-    let y = shipNode.position.y - CGFloat(bearing.y) * shipNode.size.width/2.0
-    thrustNode.position = CGPointMake(x, y)
+    thrustNode.position = CGPointMake(0 - shipNode.size.width/2.0, 0.0)
   }
   
   func getBearing() -> Vector2 {
-    return Vector2(Scalar(shipNode.size.width) / 2.0, 0).rotatedBy(Scalar(shipNode.zRotation)).normalized()
+    return Vector2.X.rotatedBy(Scalar(zRotation)).normalized()
   }
   
-  func setHeading(zRotation: CGFloat) {
-    shipNode.zRotation = zRotation
+  func steer(joysticInput: Vector2) {
+    physicsBody?.applyAngularImpulse(CGFloat(getBearing().angleWith(joysticInput) / 30))
   }
   
   func update(currentTime: CFTimeInterval) {
-    setThrustPosition()
+    thrustNode.hidden = !isThrusting
+    
     if (isThrusting) {
       thrust()
     }

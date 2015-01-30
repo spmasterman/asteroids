@@ -23,27 +23,32 @@ class Asteroid : SKNode {
   let minSpeed: UInt32 = 30
   
   init(size: AsteroidSize, position: CGPoint) {
+    var physicsBodyContraction: CGFloat = 1.0
     switch size {
     case AsteroidSize.Large:
       asteroidNode = SKSpriteNode(imageNamed: "asteroid_large_1")
+      physicsBodyContraction = 0.8
     case AsteroidSize.Medium:
       asteroidNode = SKSpriteNode(imageNamed: "asteroid_med_1")
+      physicsBodyContraction = 0.7
     case AsteroidSize.Small:
       asteroidNode = SKSpriteNode(imageNamed: "asteroid_small_1")
+      physicsBodyContraction = 0.5
     }
     aSize = size
     
     super.init()
     
-    name = "asteroid";
+    name = "asteroid"
     
-    physicsBody = SKPhysicsBody(circleOfRadius: asteroidNode.size.width/2)
+    physicsBody = SKPhysicsBody(circleOfRadius: physicsBodyContraction * CGFloat(asteroidNode.size.width/2))
     physicsBody?.categoryBitMask = asteroidCategory
     physicsBody?.dynamic = true
     physicsBody?.linearDamping = 0
-    physicsBody?.contactTestBitMask = shipCategory | bulletCategory;
-    physicsBody?.collisionBitMask = 0;
-  
+    physicsBody?.contactTestBitMask = shipCategory | bulletCategory
+    physicsBody?.collisionBitMask = 0
+    physicsBody?.angularDamping = 0
+    
     self.position = position
     
     let spin = getRandomAngle() - Float(M_PI)
