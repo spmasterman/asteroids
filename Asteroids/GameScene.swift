@@ -19,6 +19,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   let thrustButton = Button(buttonNode: SKSpriteNode(imageNamed: "thrust"))
 
   var pendingAsteroids: [(AsteroidSize, CGPoint)] = []
+  var pendingDebrisFields: [(position: CGPoint, velocity: CGVector, count: Int8)] = []
   
   func didBeginContact(contact: SKPhysicsContact!) {
     var firstBody: SKPhysicsBody!
@@ -35,7 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     if (firstBody.categoryBitMask & bulletCategory) != 0 &&
       (secondBody.categoryBitMask & asteroidCategory) != 0 {
-       (secondBody.node as Asteroid).onImpactFromBullet()
+       (secondBody.node as Asteroid).onImpactFromBullet((firstBody.node as Bullet).position)
        (firstBody.node as Bullet).onImpact()
     }
     
@@ -107,5 +108,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       addAsteroid(pendingAsteroid.0, position: pendingAsteroid.1)
     }
     pendingAsteroids = []
+  
+    for pendingDebrisField in pendingDebrisFields {
+        addChild(DebrisField(position: pendingDebrisField.position, velocity: pendingDebrisField.velocity, count: pendingDebrisField.count))
+    }
+    pendingDebrisFields = []
   }
 }

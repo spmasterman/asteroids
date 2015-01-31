@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 class Ship : SKNode {
-  let shipNode, thrustNode: SKSpriteNode
+  let shipNode, thrustNode, shieldNode: SKSpriteNode
   let thrusterPower = Scalar(6.0)
   
   var isThrusting = false
@@ -23,9 +23,13 @@ class Ship : SKNode {
   var deadTime: CFTimeInterval = 0 //cumulative time weve been dead
   var invincibleTime: CFTimeInterval = 0 // cumulative time weve been invincible
   
-  init(shipNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship"), thrustNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship_thrust")) {
+  init(shipNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship"), thrustNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship_thrust"), shieldNode: SKSpriteNode = SKSpriteNode(imageNamed: "shield")) {
     self.shipNode = shipNode
     self.thrustNode = thrustNode
+    self.shieldNode = shieldNode
+    
+    self.thrustNode.hidden = true
+    self.shieldNode.hidden = true
     
     super.init()
     
@@ -39,18 +43,17 @@ class Ship : SKNode {
     
     name = "ship";
     
-    setThrustPosition()
+    setSubViewPositions()
     self.addChild(self.shipNode)
     self.addChild(self.thrustNode)
+    self.addChild(self.shieldNode)
   }
   
   func getPath()->CGPathRef {
     var points = [CGPoint]()
-    
-    
-    points.append(CGPoint(x: 0.7 * shipNode.size.width/2.0, y: 0.0))
-    points.append(CGPoint(x: 0.7 * -shipNode.size.width/2.0, y: 0.7 * shipNode.size.height/2.0))
-    points.append(CGPoint(x: 0.7 * -shipNode.size.width/2.0, y: 0.7 * -shipNode.size.height/2.0))
+    points.append(CGPoint(x: 0.6 * shipNode.size.width/2.0, y: 0.0))
+    points.append(CGPoint(x: 0.8 * -shipNode.size.width/2.0, y: 0.6 * shipNode.size.height/2.0))
+    points.append(CGPoint(x: 0.8 * -shipNode.size.width/2.0, y: 0.6 * -shipNode.size.height/2.0))
     
     let path = CGPathCreateMutable()
     var cpg = points[0]
@@ -92,9 +95,14 @@ class Ship : SKNode {
     physicsBody?.applyForce(CGVectorMake(CGFloat(bearing.x), CGFloat(bearing.y)) )
   }
   
-  func setThrustPosition() {
+  func setSubViewPositions() {
+    shipNode.position = CGPointMake(-3.0, 0.0)
+    
     thrustNode.zRotation = shipNode.zRotation
-    thrustNode.position = CGPointMake(0 - shipNode.size.width/2.0, 0.0)
+    thrustNode.position = CGPointMake(-3.0 - shipNode.size.width/2.0, 0.0)
+    
+    shieldNode.zRotation = shipNode.zRotation
+    shieldNode.position = CGPointMake(6.0, 0.0)
   }
   
   func getBearing() -> Vector2 {
@@ -107,6 +115,7 @@ class Ship : SKNode {
   
   func update(currentTime: CFTimeInterval) {
     thrustNode.hidden = !isThrusting
+    shieldNode.hidden = !isInvincible
     
     if (isThrusting) {
       thrust()

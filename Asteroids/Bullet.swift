@@ -16,8 +16,8 @@ class Bullet : SKNode {
   init(position: CGPoint, bearing: Vector2, velocity: CGVector?) {
     super.init()
     
-    bulletNode.xScale = 2
-    bulletNode.yScale = 2
+    bulletNode.xScale = 1
+    bulletNode.yScale = 1
     name = "bullet";
     
     physicsBody = SKPhysicsBody(circleOfRadius: 2)
@@ -32,6 +32,9 @@ class Bullet : SKNode {
     let x = (velocity?.dx ?? 0) + CGFloat(bearing.x) * bulletSpeed
     let y = (velocity?.dy ?? 0) + CGFloat(bearing.y) * bulletSpeed
     physicsBody?.velocity = CGVectorMake(x, y)
+    
+    let spin = 0 - Float(M_PI)
+    physicsBody?.angularVelocity = CGFloat(spin)
     
     addChild(bulletNode)
   }
