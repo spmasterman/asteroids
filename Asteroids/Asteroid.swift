@@ -63,7 +63,7 @@ class Asteroid : SKNode {
     self.addChild(asteroidNode)
   }
   
-  func onImpactFromBullet(bulletPosition: CGPoint) {
+  func onImpactFromBullet(bulletPosition: CGPoint?) {
     var nextSize: AsteroidSize?
     
     switch aSize {
@@ -81,10 +81,11 @@ class Asteroid : SKNode {
         (scene! as GameScene).pendingAsteroids.append(pendingAsteroid)
       }
     }
-    
-    let pendingDebrisField: (position: CGPoint, velocity: CGVector, count: Int8) = (position: bulletPosition, velocity: physicsBody!.velocity, count: 10)
-    (scene! as GameScene).pendingDebrisFields.append(pendingDebrisField)
-    
+  
+    if bulletPosition != nil && physicsBody?.velocity != nil {
+      let pendingDebrisField: (position: CGPoint, velocity: CGVector, count: Int8) = (position: bulletPosition!, velocity: physicsBody!.velocity, count: 10)
+      (scene! as GameScene).pendingDebrisFields.append(pendingDebrisField)
+    }
     self.removeFromParent()
   }
   
