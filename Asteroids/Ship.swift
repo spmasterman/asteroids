@@ -20,8 +20,8 @@ class Ship : SKNode {
   let deadPause = CFTimeInterval(3)
   let invinciblePause = CFTimeInterval(3)
   
-  var deadTime: CFTimeInterval = 0 //cumulative time weve been dead
-  var invincibleTime: CFTimeInterval = 0 // cumulative time weve been invincible
+  var deadTime: CFTimeInterval = 0 //cumulative time we've been dead
+  var invincibleTime: CFTimeInterval = 0 // cumulative time we've been invincible
   
   init(shipNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship"), thrustNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship_thrust"), shieldNode: SKSpriteNode = SKSpriteNode(imageNamed: "shield")) {
     self.shipNode = shipNode
@@ -51,9 +51,9 @@ class Ship : SKNode {
   
   func getPath()->CGPathRef {
     var points = [CGPoint]()
-    points.append(CGPoint(x: 0.6 * shipNode.size.width/2.0, y: 0.0))
-    points.append(CGPoint(x: 0.8 * -shipNode.size.width/2.0, y: 0.6 * shipNode.size.height/2.0))
-    points.append(CGPoint(x: 0.8 * -shipNode.size.width/2.0, y: 0.6 * -shipNode.size.height/2.0))
+    points.append(CGPoint(x: 0.6 * shipNode.size.width/2.0 - 3, y: 0.0))
+    points.append(CGPoint(x: 0.8 * -shipNode.size.width/2.0 - 2, y: 0.6 * shipNode.size.height/2.0))
+    points.append(CGPoint(x: 0.8 * -shipNode.size.width/2.0 - 2, y: 0.6 * -shipNode.size.height/2.0))
     
     let path = CGPathCreateMutable()
     var cpg = points[0]
@@ -65,6 +65,21 @@ class Ship : SKNode {
     return path
   }
   
+  func getDebrisStartPositions()->[Int: debrisPosition]{
+    let theta = CGFloat(M_PI_2 / 3)
+   
+    var positions = [Int: debrisPosition]()
+    
+    positions[1] = (position: CGPoint(x: shipNode.size.width/4, y: shipNode.size.height/8), zRotation: -theta)
+    positions[2] = (position: CGPoint(x: shipNode.size.width/4, y: -shipNode.size.height/8), zRotation: theta)
+    positions[3] = (position: CGPoint(x: -shipNode.size.width/4, y: 3 * shipNode.size.height/8), zRotation: -theta)
+    positions[4] = (position: CGPoint(x: -shipNode.size.width/4, y: -3 * shipNode.size.height/8), zRotation: theta)
+    positions[5] = (position: CGPoint(x: -3 * shipNode.size.width/4, y: shipNode.size.height/2), zRotation: -2 * theta)
+    positions[6] = (position: CGPoint(x: -3 * shipNode.size.width/4, y: -shipNode.size.height/2), zRotation: 2 * theta)
+    
+    return positions
+  }
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -74,6 +89,7 @@ class Ship : SKNode {
       return
     }
     
+    (scene? as GameScene).looseLife()
     isDead = true
     hidden = true
   }
@@ -96,13 +112,13 @@ class Ship : SKNode {
   }
   
   func setSubViewPositions() {
-    shipNode.position = CGPointMake(-3.0, 0.0)
+    shipNode.position = CGPointMake(-6.0, 0.0)
     
     thrustNode.zRotation = shipNode.zRotation
-    thrustNode.position = CGPointMake(-3.0 - shipNode.size.width/2.0, 0.0)
+    thrustNode.position = CGPointMake(-6.0 - shipNode.size.width/2.0, 0.0)
     
     shieldNode.zRotation = shipNode.zRotation
-    shieldNode.position = CGPointMake(6.0, 0.0)
+    shieldNode.position = CGPointMake(-5.0, 0.0)
   }
   
   func getBearing() -> Vector2 {

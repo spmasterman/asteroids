@@ -14,7 +14,6 @@ enum AsteroidSize {
   case Small
 }
 
-
 class Asteroid : SKNode {
 
   var asteroidNode: SKSpriteNode

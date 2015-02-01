@@ -20,6 +20,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
   var pendingAsteroids: [(AsteroidSize, CGPoint)] = []
   var pendingDebrisFields: [(position: CGPoint, velocity: CGVector, count: Int8)] = []
+  var pendingShipDebrisFields: [(position: CGPoint, velocity: CGVector)] = []
+  
+  var lives = 0;
+  var startLives = 3;
   
   func didBeginContact(contact: SKPhysicsContact!) {
     var firstBody: SKPhysicsBody!
@@ -28,8 +32,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
       firstBody = contact.bodyA
       secondBody = contact.bodyB
-    }
-    else {
+    } else {
       firstBody = contact.bodyB
       secondBody = contact.bodyA
     }
@@ -74,6 +77,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     for _ in 1...3 {
       addAsteroid(.Large,  position: CGPoint(x: size.width - CGFloat(arc4random_uniform(UInt32(size.width * 0.5))), y: CGFloat(arc4random_uniform(UInt32(size.height)))))
     }
+    
+    for _ in 1...startLives {
+      gainLife()
+    }
+  }
+  
+  func gainLife() {
+    lives++
+    var life = SKSpriteNode(imageNamed: "life")
+    life.name = "life\(lives)"
+    let y = size.height - life.size.height
+    let x = CGFloat(size.width - 10) - (0.4  * CGFloat(lives) * CGFloat(life.size.width))
+    life.position = CGPoint(x: x, y: y)
+    addChild(life)
+  }
+  
+  func looseLife() {
+    if (ship.physicsBody != nil) {
+      let pendingShipDebrisField: (position: CGPoint, velocity: CGVector) = (position: ship.position, velocity: ship.physicsBody!.velocity)
+      pendingShipDebrisFields.append(pendingShipDebrisField)
+    
+      let pendingDebrisField: (position: CGPoint, velocity: CGVector, count: Int8) = (position: ship.position, velocity: ship.physicsBody!.velocity, count: 30)
+      (scene! as GameScene).pendingDebrisFields.append(pendingDebrisField)
+    }
+    
+    enumerateChildNodesWithName("life\(lives)", usingBlock:  {
+      (node: SKNode!, stop: UnsafeMutablePointer <ObjCBool>) -> Void in
+        node.removeFromParent()
+    })
+    
+    if lives-- == 0 {
+      let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+      let gameOverScene = GameOverScene(size: self.size, won: false)
+      self.view?.presentScene(gameOverScene, transition: reveal)
+    }
   }
   
   func addAsteroid(size: AsteroidSize, position: CGPoint) {
@@ -113,5 +151,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(DebrisField(position: pendingDebrisField.position, velocity: pendingDebrisField.velocity, count: pendingDebrisField.count))
     }
     pendingDebrisFields = []
+    
+    for pendingShipDebrisField in pendingShipDebrisFields {
+      addChild(ShipDebrisField(position: pendingShipDebrisField.position, velocity: pendingShipDebrisField.velocity, positions: ship.getDebrisStartPositions(), zRotation: ship.zRotation))
+    }
+    pendingShipDebrisFields = []
+    
   }
 }
