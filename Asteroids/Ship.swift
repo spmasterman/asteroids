@@ -44,9 +44,9 @@ class Ship : SKNode {
     name = "ship";
     
     setSubViewPositions()
-    self.addChild(self.shipNode)
     self.addChild(self.thrustNode)
     self.addChild(self.shieldNode)
+    self.addChild(self.shipNode)
   }
   
   func getPath()->CGPathRef {
