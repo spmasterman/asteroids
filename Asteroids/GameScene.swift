@@ -29,8 +29,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var firstBody: SKPhysicsBody!
     var secondBody: SKPhysicsBody!
     
-    print("didBeginContact entered for \(String(describing: contact.bodyA.node!.name)) and \(String(describing: contact.bodyB.node!.name))")
-
     if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
       firstBody = contact.bodyA
       secondBody = contact.bodyB
