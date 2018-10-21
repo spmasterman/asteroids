@@ -42,7 +42,7 @@ class Asteroid : SKNode {
     
     physicsBody = SKPhysicsBody(circleOfRadius: physicsBodyContraction * CGFloat(asteroidNode.size.width/2))
     physicsBody?.categoryBitMask = asteroidCategory
-    physicsBody?.dynamic = true
+    physicsBody?.isDynamic = true
     physicsBody?.linearDamping = 0
     physicsBody?.contactTestBitMask = shipCategory | bulletCategory
     physicsBody?.collisionBitMask = 0
@@ -50,14 +50,14 @@ class Asteroid : SKNode {
     
     self.position = position
     
-    let spin = getRandomAngle() - Float(M_PI)
+    let spin = getRandomAngle() - .pi
     physicsBody?.angularVelocity = CGFloat(spin)
     
     let theta = getRandomAngle()
     let speed = arc4random_uniform(maxSpeed - minSpeed) + minSpeed
 
-    let bearing = Vector2(Scalar(speed), 0).rotatedBy(theta)
-    physicsBody?.velocity = CGVectorMake(CGFloat(bearing.x), CGFloat(bearing.y))
+    let bearing = Vector2(Scalar(speed), 0).rotatedBy(radians: theta)
+    physicsBody?.velocity = CGVector(dx: CGFloat(bearing.x), dy: CGFloat(bearing.y))
     
     self.addChild(asteroidNode)
   }
@@ -77,19 +77,19 @@ class Asteroid : SKNode {
     if (nextSize != nil) {
       for _ in 1...3 {
         let pendingAsteroid = (nextSize!, position)
-        (scene! as GameScene).pendingAsteroids.append(pendingAsteroid)
+        (scene! as! GameScene).pendingAsteroids.append(pendingAsteroid)
       }
     }
   
     if bulletPosition != nil && physicsBody?.velocity != nil {
       let pendingDebrisField: (position: CGPoint, velocity: CGVector, count: Int8) = (position: bulletPosition!, velocity: physicsBody!.velocity, count: 10)
-      (scene! as GameScene).pendingDebrisFields.append(pendingDebrisField)
+      (scene! as! GameScene).pendingDebrisFields.append(pendingDebrisField)
     }
     self.removeFromParent()
   }
   
   func getRandomAngle()->Float {
-    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * Float(M_PI) * 2.0
+    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * .pi * 2.0
   }
   
   required init?(coder aDecoder: NSCoder) {

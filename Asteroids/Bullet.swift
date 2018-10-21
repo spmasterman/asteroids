@@ -22,7 +22,7 @@ class Bullet : SKNode {
     
     physicsBody = SKPhysicsBody(circleOfRadius: 2)
     physicsBody?.categoryBitMask = bulletCategory
-    physicsBody?.dynamic = true
+    physicsBody?.isDynamic = true
     physicsBody?.linearDamping = 0
     physicsBody?.contactTestBitMask = asteroidCategory;
     physicsBody?.collisionBitMask = 0;
@@ -31,9 +31,9 @@ class Bullet : SKNode {
     
     let x = (velocity?.dx ?? 0) + CGFloat(bearing.x) * bulletSpeed
     let y = (velocity?.dy ?? 0) + CGFloat(bearing.y) * bulletSpeed
-    physicsBody?.velocity = CGVectorMake(x, y)
+    physicsBody?.velocity = CGVector(dx: x, dy: y)
     
-    let spin = 0 - Float(M_PI)
+    let spin = 0 - Double.pi
     physicsBody?.angularVelocity = CGFloat(spin)
     
     addChild(bulletNode)

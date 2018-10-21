@@ -25,7 +25,7 @@ class ShipDebrisField : SKNode {
     self.zRotation = zRotation
    
     for index in 1 ... 6 {
-      var debrisNode = SKSpriteNode(imageNamed: "ship_debris")
+      let debrisNode = SKSpriteNode(imageNamed: "ship_debris")
       debrisNode.xScale = 1
       debrisNode.yScale = 1
     
@@ -35,25 +35,25 @@ class ShipDebrisField : SKNode {
       
       addChild(debrisNode)
       
-      let bearing = Vector2.X.rotatedBy(getRandomAngle()) * Scalar(arc4random_uniform(maxDistance - minDistance) + minDistance)
+      let bearing = Vector2.X.rotatedBy(radians: getRandomAngle()) * Scalar(arc4random_uniform(maxDistance - minDistance) + minDistance)
       let destination = CGPoint(x: CGFloat(bearing.x), y: CGFloat(bearing.y))
-      let lifetime = NSTimeInterval(arc4random_uniform(maxLife - minLife) + minLife)
+      let lifetime = TimeInterval(arc4random_uniform(maxLife - minLife) + minLife)
       
-      let moveAction = SKAction.moveTo(destination, duration: lifetime)
-      let fadeAction = SKAction.fadeOutWithDuration(lifetime)
-      let rotateAction = SKAction.rotateByAngle(CGFloat(getRandomAngle()), duration: lifetime)
+      let moveAction = SKAction.move(to: destination, duration: lifetime)
+      let fadeAction = SKAction.fadeOut(withDuration: lifetime)
+      let rotateAction = SKAction.rotate(byAngle: CGFloat(getRandomAngle()), duration: lifetime)
       let cleanUpAction = SKAction.removeFromParent()
       
-      debrisNode.runAction(SKAction.sequence([SKAction.group([moveAction, fadeAction, rotateAction]), cleanUpAction]))
+        debrisNode.run(SKAction.sequence([SKAction.group([moveAction, fadeAction, rotateAction]), cleanUpAction]))
     }
 
     name = "shipDebrisField";
      
     self.position = position
     
-    let lifetime = NSTimeInterval(maxLife)
-    let moveAction = SKAction.moveBy(velocity, duration: lifetime)
-    let cleanUpAction = SKAction.removeFromParent()
+    let lifetime = TimeInterval(maxLife)
+    _ = SKAction.move(by: velocity, duration: lifetime)
+    _ = SKAction.removeFromParent()
   }
   
   
@@ -63,6 +63,6 @@ class ShipDebrisField : SKNode {
   }
   
   func getRandomAngle()->Float {
-    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * Float(M_PI) * 2.0
+    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * .pi * 2.0
   }
 }

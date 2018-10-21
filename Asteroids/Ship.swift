@@ -28,14 +28,14 @@ class Ship : SKNode {
     self.thrustNode = thrustNode
     self.shieldNode = shieldNode
     
-    self.thrustNode.hidden = true
-    self.shieldNode.hidden = true
+    self.thrustNode.isHidden = true
+    self.shieldNode.isHidden = true
     
     super.init()
     
-    physicsBody = SKPhysicsBody(polygonFromPath: getPath())
+    physicsBody = SKPhysicsBody(polygonFrom: getPath())
     physicsBody?.categoryBitMask = shipCategory
-    physicsBody?.dynamic = true
+    physicsBody?.isDynamic = true
     physicsBody?.contactTestBitMask = asteroidCategory
     physicsBody?.collisionBitMask = 0
     physicsBody?.allowsRotation = true
@@ -49,24 +49,24 @@ class Ship : SKNode {
     self.addChild(self.shipNode)
   }
   
-  func getPath()->CGPathRef {
+  func getPath()->CGPath {
     var points = [CGPoint]()
     points.append(CGPoint(x: 0.6 * shipNode.size.width/2.0 - 3, y: 0.0))
     points.append(CGPoint(x: 0.8 * -shipNode.size.width/2.0 - 2, y: 0.6 * shipNode.size.height/2.0))
     points.append(CGPoint(x: 0.8 * -shipNode.size.width/2.0 - 2, y: 0.6 * -shipNode.size.height/2.0))
     
-    let path = CGPathCreateMutable()
-    var cpg = points[0]
-    CGPathMoveToPoint(path, nil, cpg.x, cpg.y)
+    let path = CGMutablePath()
+    let cpg = points[0]
+    path.move(to: cpg)
     for p in points {
-      CGPathAddLineToPoint(path, nil, p.x, p.y)
+        path.addLine(to: p)
     }
-    CGPathCloseSubpath(path)
+    path.closeSubpath()
     return path
   }
   
   func getDebrisStartPositions()->[Int: debrisPosition]{
-    let theta = CGFloat(M_PI_2 / 3)
+    let theta = CGFloat(Double.pi/2 / 3)
    
     var positions = [Int: debrisPosition]()
     
@@ -89,9 +89,9 @@ class Ship : SKNode {
       return
     }
     
-    (scene? as GameScene).looseLife()
+    (scene as! GameScene).looseLife()
     isDead = true
-    hidden = true
+    isHidden = true
   }
   
   func fire() {
@@ -101,37 +101,37 @@ class Ship : SKNode {
       let x = position.x + CGFloat(bearing.x) * shipNode.size.width/2.0
       let y = position.y + CGFloat(bearing.y) * shipNode.size.width/2.0
       
-      let bullet = Bullet(position: CGPointMake(x, y), bearing: bearing, velocity:physicsBody?.velocity)
+        let bullet = Bullet(position: CGPoint(x: x, y: y), bearing: bearing, velocity:physicsBody?.velocity)
       self.scene?.addChild(bullet)
     }
   }
   
   func thrust() {
     let bearing = getBearing() * thrusterPower
-    physicsBody?.applyForce(CGVectorMake(CGFloat(bearing.x), CGFloat(bearing.y)) )
+    physicsBody?.applyForce(CGVector(dx: CGFloat(bearing.x), dy: CGFloat(bearing.y)) )
   }
   
   func setSubViewPositions() {
-    shipNode.position = CGPointMake(-6.0, 0.0)
+    shipNode.position = CGPoint(x: -6.0, y: 0.0)
     
     thrustNode.zRotation = shipNode.zRotation
-    thrustNode.position = CGPointMake(-6.0 - shipNode.size.width/2.0, 0.0)
+    thrustNode.position = CGPoint(x: -6.0 - shipNode.size.width/2.0, y: 0.0)
     
     shieldNode.zRotation = shipNode.zRotation
-    shieldNode.position = CGPointMake(-5.0, 0.0)
+    shieldNode.position = CGPoint(x: -5.0, y: 0.0)
   }
   
   func getBearing() -> Vector2 {
-    return Vector2.X.rotatedBy(Scalar(zRotation)).normalized()
+    return Vector2.X.rotatedBy(radians: Scalar(zRotation)).normalized()
   }
   
   func steer(joysticInput: Vector2) {
-    physicsBody?.applyAngularImpulse(CGFloat(getBearing().angleWith(joysticInput) / 30))
+    physicsBody?.applyAngularImpulse(CGFloat(getBearing().angleWith(v: joysticInput) / 30))
   }
   
   func update(currentTime: CFTimeInterval) {
-    thrustNode.hidden = !isThrusting
-    shieldNode.hidden = !isInvincible
+    thrustNode.isHidden = !isThrusting
+    shieldNode.isHidden = !isInvincible
     
     if (isThrusting) {
       thrust()
@@ -160,10 +160,10 @@ class Ship : SKNode {
           invincibleTime = 0
           isDead = false
           isInvincible = true
-          position = (scene as GameScene).getSpawnPosition()
+          position = (scene as! GameScene).getSpawnPosition()
           physicsBody?.velocity = CGVector(dx:0, dy:0)
           zRotation = 0
-          hidden = false
+        isHidden = false
       }
     }
     

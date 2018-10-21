@@ -21,21 +21,21 @@ class Button: SKNode {
     super.init()
     
     self.addChild(self.buttonNode)
-    self.userInteractionEnabled = true
+    self.isUserInteractionEnabled = true
   }
 
   required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
   }
 
-  override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-    for touch in touches {
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    for _ in touches {
       onDown()
     }
   }
   
-  override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-    for touch in touches {
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    for _ in touches {
       onUp()
     }
   }

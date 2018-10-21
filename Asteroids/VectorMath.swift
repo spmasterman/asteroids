@@ -19,10 +19,10 @@ struct Vector2 {
 
 extension Scalar {
   
-  static let Pi = Scalar(M_PI)
-  static let HalfPi = Scalar(M_PI_2)
-  static let QuarterPi = Scalar(M_PI_4)
-  static let TwoPi = Scalar(M_PI * 2)
+  static let Pi = Scalar(Double.pi)
+  static let HalfPi = Scalar(Double.pi/2)
+  static let QuarterPi = Scalar(Double.pi/4)
+  static let TwoPi = Scalar(Double.pi * 2)
   static let DegreesPerRadian = 180 / Pi
   static let RadiansPerDegree = Pi / 180
   static let Epsilon: Scalar = 0.0001
@@ -97,7 +97,7 @@ extension Vector2: Equatable, Hashable {
   }
   
   func rotatedBy(radians: Scalar, around pivot: Vector2) -> Vector2 {
-    return (self - pivot).rotatedBy(radians) + pivot
+    return (self - pivot).rotatedBy(radians: radians) + pivot
   }
   
   func angleWith(v: Vector2) -> Scalar {
@@ -108,8 +108,8 @@ extension Vector2: Equatable, Hashable {
     
     let t1 = normalized()
     let t2 = v.normalized()
-    let cross = t1.cross(t2)
-    let dot = max(-1, min(1, t1.dot(t2)))
+    let cross = t1.cross(v: t2)
+    let dot = max(-1, min(1, t1.dot(v: t2)))
     
     return atan2(cross, dot)
   }
