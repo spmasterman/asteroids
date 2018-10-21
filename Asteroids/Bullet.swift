@@ -24,8 +24,9 @@ class Bullet : SKNode {
     physicsBody?.categoryBitMask = bulletCategory
     physicsBody?.isDynamic = true
     physicsBody?.linearDamping = 0
-    physicsBody?.contactTestBitMask = asteroidCategory;
-    physicsBody?.collisionBitMask = 0;
+    physicsBody?.contactTestBitMask = asteroidCategory
+    physicsBody?.collisionBitMask = 0
+    physicsBody?.usesPreciseCollisionDetection = true
     
     self.position = position
     

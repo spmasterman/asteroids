@@ -23,7 +23,10 @@ class Ship : SKNode {
   var deadTime: CFTimeInterval = 0 //cumulative time we've been dead
   var invincibleTime: CFTimeInterval = 0 // cumulative time we've been invincible
   
-  init(shipNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship"), thrustNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship_thrust"), shieldNode: SKSpriteNode = SKSpriteNode(imageNamed: "shield")) {
+  init(shipNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship"),
+       thrustNode: SKSpriteNode = SKSpriteNode(imageNamed: "ship_thrust"),
+       shieldNode: SKSpriteNode = SKSpriteNode(imageNamed: "shield")) {
+    
     self.shipNode = shipNode
     self.thrustNode = thrustNode
     self.shieldNode = shieldNode
@@ -40,6 +43,7 @@ class Ship : SKNode {
     physicsBody?.collisionBitMask = 0
     physicsBody?.allowsRotation = true
     physicsBody?.angularDamping = 5000.0
+    physicsBody?.usesPreciseCollisionDetection = true
     
     name = "ship";
     

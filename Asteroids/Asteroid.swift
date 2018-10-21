@@ -47,6 +47,7 @@ class Asteroid : SKNode {
     physicsBody?.contactTestBitMask = shipCategory | bulletCategory
     physicsBody?.collisionBitMask = 0
     physicsBody?.angularDamping = 0
+    physicsBody?.usesPreciseCollisionDetection = true
     
     self.position = position
     

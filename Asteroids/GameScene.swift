@@ -25,10 +25,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   var lives = 0;
   var startLives = 3;
   
-  func didBeginContact(contact: SKPhysicsContact!) {
+  func didBegin(_ contact: SKPhysicsContact) {
     var firstBody: SKPhysicsBody!
     var secondBody: SKPhysicsBody!
     
+    print("didBeginContact entered for \(String(describing: contact.bodyA.node!.name)) and \(String(describing: contact.bodyB.node!.name))")
+
     if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
       firstBody = contact.bodyA
       secondBody = contact.bodyB
@@ -55,28 +57,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     return CGPoint(x: size.width * 0.1, y: size.height * 0.5)
   }
   
-    override func didMove(to view: SKView) {
+  override func didMove(to view: SKView) {
     backgroundColor = SKColor.black
     
-        physicsWorld.gravity = CGVector(dx: 0,dy: 0);
+    physicsWorld.gravity = CGVector(dx: 0, dy: 0);
     physicsWorld.contactDelegate = self;
     
     ship.position = getSpawnPosition()
     addChild(ship)
     
-        joystick.position = CGPoint(x: CGFloat(100), y: CGFloat(100))
+    joystick.position = CGPoint(x: CGFloat(100), y: CGFloat(100))
     addChild(joystick)
     
-        fireButton.position = CGPoint(x: CGFloat(size.width - 100), y: CGFloat(100))
+    fireButton.position = CGPoint(x: CGFloat(size.width - 100), y: CGFloat(100))
     fireButton.onDown = { self.ship.fire() }
     addChild(fireButton)
     
-        thrustButton.position = CGPoint(x: CGFloat(size.width - 170), y: CGFloat(100))
+    thrustButton.position = CGPoint(x: CGFloat(size.width - 170), y: CGFloat(100))
     thrustButton.onDown = { self.ship.isThrusting = true }
     thrustButton.onUp = { self.ship.isThrusting = false }
     addChild(thrustButton)
     
-        spawnAsteroids(asteroidSize: .Large, count: 3)
+    spawnAsteroids(asteroidSize: .Large, count: 3)
     
     for _ in 1...startLives {
       gainLife()
@@ -138,7 +140,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     })
   }
   
-    override func update(_ currentTime: CFTimeInterval) {
+  override func update(_ currentTime: CFTimeInterval) {
     ship.steer(joysticInput: joystick.valueVector)
     ship.update(currentTime: currentTime)
     
