@@ -11,6 +11,7 @@ import SpriteKit
 let shipCategory: UInt32 =  0x1 << 0;
 let bulletCategory: UInt32 =  0x1 << 1;
 let asteroidCategory: UInt32 =  0x1 << 2;
+let saucerCategory: UInt32 =  0x1 << 3;
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
   let ship = Ship()

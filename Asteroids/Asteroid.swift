@@ -16,11 +16,12 @@ enum AsteroidSize {
 
 class Asteroid : SKNode {
 
-  var asteroidNode: SKSpriteNode
-  var aSize: AsteroidSize
   let maxSpeed: UInt32 = 60
   let minSpeed: UInt32 = 30
-  
+    
+  var asteroidNode: SKSpriteNode
+  var aSize: AsteroidSize
+
   init(size: AsteroidSize, position: CGPoint) {
     var physicsBodyContraction: CGFloat = 1.0
     switch size {
@@ -51,7 +52,7 @@ class Asteroid : SKNode {
     
     self.position = position
     
-    let spin = getRandomAngle() - .pi
+    let spin = getRandomAngle() - Scalar.Pi
     physicsBody?.angularVelocity = CGFloat(spin)
     
     let theta = getRandomAngle()
@@ -89,10 +90,6 @@ class Asteroid : SKNode {
     self.removeFromParent()
   }
   
-  func getRandomAngle()->Float {
-    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * .pi * 2.0
-  }
-  
   required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
   }
@@ -113,5 +110,4 @@ class Asteroid : SKNode {
       position.y = -yPadding
     }
   }
-
 }

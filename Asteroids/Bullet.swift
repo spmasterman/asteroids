@@ -34,7 +34,7 @@ class Bullet : SKNode {
     let y = (velocity?.dy ?? 0) + CGFloat(bearing.y) * bulletSpeed
     physicsBody?.velocity = CGVector(dx: x, dy: y)
     
-    let spin = 0 - Double.pi
+    let spin = 0 - Scalar.Pi
     physicsBody?.angularVelocity = CGFloat(spin)
     
     addChild(bulletNode)

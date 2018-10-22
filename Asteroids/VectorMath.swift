@@ -15,6 +15,10 @@ struct Vector2 {
   var y: Scalar
 }
 
+func getRandomAngle()->Float {
+    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * Scalar.Pi * 2.0
+}
+
 //MARK: Scalar
 
 extension Scalar {

@@ -22,18 +22,18 @@ class DebrisField : SKNode {
     super.init()
     
     for _ in 1 ... count {
-        let debrisNode = SKSpriteNode(imageNamed: "shot")
+      let debrisNode = SKSpriteNode(imageNamed: "shot")
       debrisNode.xScale = 0.5
       debrisNode.yScale = 0.5
 
       addChild(debrisNode)
       
-        let bearing = Vector2.X.rotatedBy(radians: getRandomAngle()) * Scalar(arc4random_uniform(maxDistance - minDistance) + minDistance)
+      let bearing = Vector2.X.rotatedBy(radians: getRandomAngle()) * Scalar(arc4random_uniform(maxDistance - minDistance) + minDistance)
       let destination = CGPoint(x: CGFloat(bearing.x), y: CGFloat(bearing.y))
       let lifetime = TimeInterval(arc4random_uniform(maxLife - minLife) + minLife)
-        let moveAction = SKAction.move(to: destination, duration: lifetime)
+      let moveAction = SKAction.move(to: destination, duration: lifetime)
       let cleanUpAction = SKAction.removeFromParent()
-        debrisNode.run(SKAction.sequence([moveAction, cleanUpAction]))
+      debrisNode.run(SKAction.sequence([moveAction, cleanUpAction]))
     }
   
     name = "debrisField";
@@ -51,6 +51,6 @@ class DebrisField : SKNode {
   }
   
   func getRandomAngle()->Float {
-    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * .pi * 2.0
+    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * Scalar.TwoPi
   }
 }

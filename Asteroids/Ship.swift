@@ -70,7 +70,7 @@ class Ship : SKNode {
   }
   
   func getDebrisStartPositions()->[Int: debrisPosition]{
-    let theta = CGFloat(Double.pi/2 / 3)
+    let theta = CGFloat(Scalar.HalfPi / 3)
    
     var positions = [Int: debrisPosition]()
     

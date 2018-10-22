@@ -51,6 +51,7 @@
 		26A320E41A7C4406009D6F85 /* shot.png in Resources */ = {isa = PBXBuildFile; fileRef = 26A320DE1A7C4406009D6F85 /* shot.png */; };
 		26A320E51A7C4406009D6F85 /* shot@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = 26A320DF1A7C4406009D6F85 /* shot@x2.png */; };
 		26A320E71A7C47F2009D6F85 /* DebrisField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A320E61A7C47F2009D6F85 /* DebrisField.swift */; };
+		26BFA218217DA4D40085FCFD /* Saucer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BFA217217DA4D40085FCFD /* Saucer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		26A320DE1A7C4406009D6F85 /* shot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shot.png; sourceTree = "<group>"; };
 		26A320DF1A7C4406009D6F85 /* shot@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shot@x2.png"; sourceTree = "<group>"; };
 		26A320E61A7C47F2009D6F85 /* DebrisField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebrisField.swift; sourceTree = "<group>"; };
+		26BFA217217DA4D40085FCFD /* Saucer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Saucer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +172,7 @@
 				266DA20D1A76A104009C55CC /* Images.xcassets */,
 				266DA20F1A76A104009C55CC /* LaunchScreen.xib */,
 				266DA2001A76A104009C55CC /* Supporting Files */,
+				26BFA217217DA4D40085FCFD /* Saucer.swift */,
 			);
 			path = Asteroids;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 				26A320C91A7AB3CD009D6F85 /* Asteroid.swift in Sources */,
 				266DA2271A76A217009C55CC /* GameOverScene.swift in Sources */,
 				2686E4F51A784B5500719660 /* VectorMath.swift in Sources */,
+				26BFA218217DA4D40085FCFD /* Saucer.swift in Sources */,
 				26A320C31A786654009D6F85 /* Ship.swift in Sources */,
 				266DA2031A76A104009C55CC /* AppDelegate.swift in Sources */,
 				26A320C71A79869F009D6F85 /* Bullet.swift in Sources */,

@@ -63,6 +63,6 @@ class ShipDebrisField : SKNode {
   }
   
   func getRandomAngle()->Float {
-    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * .pi * 2.0
+    return Float(arc4random_uniform(UInt32.max))/Float(UInt32.max) * Scalar.TwoPi
   }
 }
