@@ -8,42 +8,47 @@
 
 import SpriteKit
 
+enum SaucerSize {
+  case Medium
+  case Small
+}
+
 class Saucer : SKNode {
     
-    let maxSpeed: UInt32 = 80
-    let minSpeed: UInt32 = 50
+  let maxSpeed: UInt32 = 80
+  let minSpeed: UInt32 = 50
     
-    var saucerNode: SKSpriteNode
+  var saucerNode: SKSpriteNode
     
-    init(saucerNode: SKSpriteNode = SKSpriteNode(imageNamed: "saucer"), position: CGPoint) {
+  init(size: SaucerSize, position: CGPoint) {
  
-        self.saucerNode = saucerNode
+    self.saucerNode = SKSpriteNode(imageNamed: "saucer")
         
-        super.init()
+    super.init()
         
-        physicsBody = SKPhysicsBody(circleOfRadius: 4.0)
-        physicsBody?.categoryBitMask = saucerCategory
-        physicsBody?.isDynamic = true
-        physicsBody?.contactTestBitMask = shipCategory | bulletCategory
-        physicsBody?.collisionBitMask = 0
-        physicsBody?.allowsRotation = false
-        physicsBody?.usesPreciseCollisionDetection = true
+    physicsBody = SKPhysicsBody(circleOfRadius: 4.0)
+    physicsBody?.categoryBitMask = saucerCategory
+    physicsBody?.isDynamic = true
+    physicsBody?.contactTestBitMask = shipCategory | bulletCategory
+    physicsBody?.collisionBitMask = 0
+    physicsBody?.allowsRotation = false
+    physicsBody?.usesPreciseCollisionDetection = true
         
-        name = "saucer";
+    name = "saucer";
         
-        self.position = position
+    self.position = position
    
-        let theta = getRandomAngle()
-        let speed = arc4random_uniform(maxSpeed - minSpeed) + minSpeed
+    let theta = getRandomAngle()
+    let speed = arc4random_uniform(maxSpeed - minSpeed) + minSpeed
         
-        let bearing = Vector2(Scalar(speed), 0).rotatedBy(radians: theta)
-        physicsBody?.velocity = CGVector(dx: CGFloat(bearing.x), dy: CGFloat(bearing.y))
+    let bearing = Vector2(Scalar(speed), 0).rotatedBy(radians: theta)
+    physicsBody?.velocity = CGVector(dx: CGFloat(bearing.x), dy: CGFloat(bearing.y))
         
-        self.addChild(self.saucerNode)
-    }
+    self.addChild(self.saucerNode)
+  }
 
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 }

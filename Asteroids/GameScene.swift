@@ -22,9 +22,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   var pendingAsteroids: [(AsteroidSize, CGPoint)] = []
   var pendingDebrisFields: [(position: CGPoint, velocity: CGVector, count: Int8)] = []
   var pendingShipDebrisFields: [(position: CGPoint, velocity: CGVector)] = []
+  var pendingSaucers: [(size: SaucerSize, position: CGPoint)] = []
   
-  var lives = 0;
-  var startLives = 3;
+  var lives = 0
+  var startLives = 3
+  var score = 0
   
   func didBegin(_ contact: SKPhysicsContact) {
     var firstBody: SKPhysicsBody!
@@ -42,6 +44,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       (secondBody.categoryBitMask & asteroidCategory) != 0 {
       if (firstBody.node != nil) {  // bullet can hit two things at once - second one should be ignored as bullet will be removed already
         (secondBody.node as! Asteroid).onImpactFromBullet(bulletPosition: (firstBody.node as! Bullet).position)
+        incrementScore(by: (secondBody.node as! Asteroid).score)
         (firstBody.node as! Bullet).onImpact()
       }
     }
@@ -85,7 +88,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   }
   
   func gainLife() {
-    lives+=1
+    lives += 1
     let life = SKSpriteNode(imageNamed: "life")
     life.name = "life\(lives)"
     let y = size.height - life.size.height
@@ -108,7 +111,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         node.removeFromParent()
     })
     
-    lives-=1
+    lives -= 1
     if lives == 0 {
         let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
       let gameOverScene = GameOverScene(size: self.size, won: false)
@@ -116,9 +119,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
   }
   
+  func incrementScore(by: Int) {
+    score += by
+    print("Score: \(score).")
+    if (score == 100 && pendingSaucers.count == 0) {
+      let pendingSaucer: (size: SaucerSize, position: CGPoint) = (size: SaucerSize.Medium, position: CGPoint(x: 0, y:0))
+      pendingSaucers.append(pendingSaucer)
+    }
+  }
+  
   func spawnAsteroids(asteroidSize: AsteroidSize, count: Int) {
     for _ in 1...count {
-        addAsteroid(size: asteroidSize,  position: CGPoint(x: size.width - CGFloat(arc4random_uniform(UInt32(size.width * 0.5))), y: CGFloat(arc4random_uniform(UInt32(size.height)))))
+        addAsteroid(size: asteroidSize,  position: CGPoint(x: size.width - CGFloat(arc4random_uniform(UInt32(size.width * 0.5))),
+                                                           y: CGFloat(arc4random_uniform(UInt32(size.height)))))
     }
   }
   
@@ -153,16 +166,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     })
 
     if (!anyAsteroidsLeft) {
-        spawnAsteroids(asteroidSize: .Large, count: 3)
+      spawnAsteroids(asteroidSize: .Large, count: 3)
     }
     
     for pendingAsteroid in pendingAsteroids {
-        addAsteroid(size: pendingAsteroid.0, position: pendingAsteroid.1)
+      addAsteroid(size: pendingAsteroid.0, position: pendingAsteroid.1)
     }
     pendingAsteroids = []
   
     for pendingDebrisField in pendingDebrisFields {
-        addChild(DebrisField(position: pendingDebrisField.position, velocity: pendingDebrisField.velocity, count: pendingDebrisField.count))
+      addChild(DebrisField(position: pendingDebrisField.position, velocity: pendingDebrisField.velocity, count: pendingDebrisField.count))
     }
     pendingDebrisFields = []
     
@@ -170,6 +183,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       addChild(ShipDebrisField(position: pendingShipDebrisField.position, velocity: pendingShipDebrisField.velocity, positions: ship.getDebrisStartPositions(), zRotation: ship.zRotation))
     }
     pendingShipDebrisFields = []
+    
+    for pendingSaucer in pendingSaucers {
+      addChild(Saucer(size: pendingSaucer.size, position: pendingSaucer.position))
+    }
+    pendingSaucers = []
     
   }
 }

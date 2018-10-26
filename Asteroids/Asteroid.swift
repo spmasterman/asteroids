@@ -18,6 +18,7 @@ class Asteroid : SKNode {
 
   let maxSpeed: UInt32 = 60
   let minSpeed: UInt32 = 30
+  let score: Int
     
   var asteroidNode: SKSpriteNode
   var aSize: AsteroidSize
@@ -28,12 +29,15 @@ class Asteroid : SKNode {
     case AsteroidSize.Large:
       asteroidNode = SKSpriteNode(imageNamed: "asteroid_large_1")
       physicsBodyContraction = 0.8
+      score = 10
     case AsteroidSize.Medium:
       asteroidNode = SKSpriteNode(imageNamed: "asteroid_med_1")
       physicsBodyContraction = 0.7
+      score = 15
     case AsteroidSize.Small:
       asteroidNode = SKSpriteNode(imageNamed: "asteroid_small_1")
       physicsBodyContraction = 0.5
+      score = 25
     }
     aSize = size
     
